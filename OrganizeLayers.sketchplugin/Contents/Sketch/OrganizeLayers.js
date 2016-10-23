@@ -1,6 +1,10 @@
+function layerName(prefix, count) {
+    return prefix+" "+count;
+}
+
 function moveLayer(layer, amount) {
     if (amount < 0) {
-        for (var i = 0; i < Math.abs(amount); ++i) {
+        for (var i = 0; i < Math.abs(amount)-1; ++i) {
             layer.moveForward();
         }
     } else if (amount > 0) {
@@ -10,44 +14,43 @@ function moveLayer(layer, amount) {
     }
 }
 
-function layerName(prefix, count) {
-    return prefix+" "+count;
-}
-
 function reorderLayers(layers, callback) {
-    var indexOffset = layers[0].index;
+    var indexStart = layers[layers.length-1].index;
     layers.forEach(function(layer, index) {
-        // TODO: don't move beyond the image offset
-        var moveOffset = layer.index-index-indexOffset;
-        moveLayer(layer, moveOffset);
+        var desiredIndex = index+indexStart;
+        var moveAmount = layer.index-desiredIndex;
+        moveLayer(layer, moveAmount);
         if (callback) { 
             callback(layer, index);
         }
     });
 }
 
-// TODO: test this method
 function sortLayers(layers) {
     var sortedLayers = [];
     layers.forEach(function(layer, index) {
         var insertIndex;
-        sortedLayers.forEach(function(newLayer, newIndex) {
-            if (layer.frame.y < newLayer.frame.y) {
-                insertIndex = newIndex;
+        sortedLayers.forEach(function(sortedLayer, sortedIndex) {
+            if (insertIndex === undefined) {
+                if (layer.frame.y < sortedLayer.frame.y) {
+                    insertIndex = sortedIndex;
+                } else if (layer.frame.x < sortedLayer.frame.x) {
+                    insertIndex = sortedIndex;
+                }
             }
         });
-        if (insertIndex) {
+        if (insertIndex !== undefined) {
             sortedLayers.splice(insertIndex, 0, layer);
         } else {
             sortedLayers.push(layer);
         }
     });  
-    return sortedLayers;
+    return sortedLayers.reverse();
 }
 
 function organizeLayers(prefix, layers) {
     reorderLayers(sortLayers(layers), function(layer, index) {
-        layer.name = layerName(prefix, index+1);
+        layer.name = layerName(prefix, layers.length-index);
     });
 }
 
@@ -61,15 +64,11 @@ function main(context) {
     } else {
         var prefix = sketch.getStringFromUser("Prefix name", "");
         organizeLayers(prefix, selection.nativeLayers);
+        sketch.message("Layers organized!");
     }
-    sketch.message("Layers organized!");
 }
 
 // Tests
-
-// test x vs y axis
-// test no prefix
-// make sure order and naming is what we expect
 
 function testLayerName(tester) {
     tester.assertEqual(layerName("Layer", 1), "Layer 1");
@@ -96,7 +95,106 @@ function testMoveLayer(tester) {
     tester.assertEqual(layer1.index, 1);
     tester.assertEqual(layer3.index, 0);
 
-    moveLayer(layer1, -1);
+    moveLayer(layer1, -2);
+
+    tester.assertEqual(layer1.index, 2);
+    tester.assertEqual(layer2.index, 1);
+    tester.assertEqual(layer3.index, 0);
+
+    parent.remove();
+}
+
+function testSortLayersVertically(tester) {
+    var sketch = context.api();
+    var page = sketch.selectedDocument.selectedPage;
+    var parent = page.newGroup();
+
+    var size = 100;
+    var layers = [];
+    var layer5 = parent.newGroup({"name": "Group 5", "frame": new Rectangle(size*4, 0, size, size)});
+    layers.push(layer5);    
+    var layer1 = parent.newGroup({"name": "Group 1", "frame": new Rectangle(size*0, 0, size, size)});
+    layers.push(layer1);
+    var layer4 = parent.newGroup({"name": "Group 4", "frame": new Rectangle(size*3, 0, size, size)});
+    layers.push(layer4);
+    var layer2 = parent.newGroup({"name": "Group 2", "frame": new Rectangle(size*1, 0, size, size)});
+    layers.push(layer2);
+    var layer3 = parent.newGroup({"name": "Group 3", "frame": new Rectangle(size*2, 0, size, size)});
+    layers.push(layer3);
+
+    var sortedLayers = sortLayers(layers);
+
+    tester.assertEqual(sortedLayers[4], layer1);
+    tester.assertEqual(sortedLayers[3], layer2);
+    tester.assertEqual(sortedLayers[2], layer3);
+    tester.assertEqual(sortedLayers[1], layer4);
+    tester.assertEqual(sortedLayers[0], layer5);
+
+    parent.remove();    
+}
+
+function testSortLayersHorizontally(tester) {
+    var sketch = context.api();
+    var page = sketch.selectedDocument.selectedPage;
+    var parent = page.newGroup();
+
+    var size = 100;
+    var layers = [];
+    var layer5 = parent.newGroup({"name": "Group 5", "frame": new Rectangle(0, size*4, size, size)});
+    layers.push(layer5);    
+    var layer1 = parent.newGroup({"name": "Group 1", "frame": new Rectangle(0, size*0, size, size)});
+    layers.push(layer1);
+    var layer4 = parent.newGroup({"name": "Group 4", "frame": new Rectangle(0, size*3, size, size)});
+    layers.push(layer4);
+    var layer2 = parent.newGroup({"name": "Group 2", "frame": new Rectangle(0, size*1, size, size)});
+    layers.push(layer2);
+    var layer3 = parent.newGroup({"name": "Group 3", "frame": new Rectangle(0, size*2, size, size)});
+    layers.push(layer3);
+
+    var sortedLayers = sortLayers(layers);
+
+    tester.assertEqual(sortedLayers[4], layer1);
+    tester.assertEqual(sortedLayers[3], layer2);
+    tester.assertEqual(sortedLayers[2], layer3);
+    tester.assertEqual(sortedLayers[1], layer4);
+    tester.assertEqual(sortedLayers[0], layer5);
+
+    parent.remove();    
+}
+
+function testReorderSimple2Layers(tester) {
+    var sketch = context.api();
+    var page = sketch.selectedDocument.selectedPage;
+    var parent = page.newGroup();
+
+    var layer1 = parent.newGroup({"name": "Group 1"});
+    var layer2 = parent.newGroup({"name": "Group 2"});
+
+    tester.assertEqual(layer2.index, 1);
+    tester.assertEqual(layer1.index, 0);
+
+    reorderLayers([layer2, layer1]);
+
+    tester.assertEqual(layer1.index, 1);
+    tester.assertEqual(layer2.index, 0);
+
+    parent.remove();
+}
+
+function testReorderSimple3Layers(tester) {
+    var sketch = context.api();
+    var page = sketch.selectedDocument.selectedPage;
+    var parent = page.newGroup();
+
+    var layer1 = parent.newGroup({"name": "Group 1"});
+    var layer2 = parent.newGroup({"name": "Group 2"});
+    var layer3 = parent.newGroup({"name": "Group 3"});
+
+    tester.assertEqual(layer3.index, 2);
+    tester.assertEqual(layer2.index, 1);
+    tester.assertEqual(layer1.index, 0);
+
+    reorderLayers([layer3, layer2, layer1]);
 
     tester.assertEqual(layer1.index, 2);
     tester.assertEqual(layer2.index, 1);
@@ -161,22 +259,24 @@ function testReorderSomeLayers(tester) {
     parent.remove();
 }
 
+// TODO: test no prefix
 function testOrganizeLayers(tester) {
     var sketch = context.api();
     var parent = sketch.selectedDocument.selectedPage.newGroup();
     var prefix = "Table Row";
 
+    var size = 100;
     var layers = [];
     var bottomLayer = parent.newGroup({"name": "Bottom Group"});
-    var layer5 = parent.newGroup({"name": "Group 5", "frame": new Rectangle(0, 176, 100, 44)});
+    var layer5 = parent.newGroup({"name": "Group 5", "frame": new Rectangle(0, size*4, size, size)});
     layers.push(layer5);    
-    var layer1 = parent.newGroup({"name": "Group 1", "frame": new Rectangle(0, 0, 100, 44)});
+    var layer1 = parent.newGroup({"name": "Group 1", "frame": new Rectangle(0, size*0, size, size)});
     layers.push(layer1);
-    var layer4 = parent.newGroup({"name": "Group 4", "frame": new Rectangle(0, 132, 100, 44)});
+    var layer4 = parent.newGroup({"name": "Group 4", "frame": new Rectangle(0, size*3, size, size)});
     layers.push(layer4);
-    var layer2 = parent.newGroup({"name": "Group 2", "frame": new Rectangle(0, 44, 100, 44)});
+    var layer2 = parent.newGroup({"name": "Group 2", "frame": new Rectangle(0, size*1, size, size)});
     layers.push(layer2);
-    var layer3 = parent.newGroup({"name": "Group 3", "frame": new Rectangle(0, 88, 100, 44)});
+    var layer3 = parent.newGroup({"name": "Group 3", "frame": new Rectangle(0, size*2, size, size)});
     layers.push(layer3);
     var topLayer = parent.newGroup({"name": "Top Group"});
     
@@ -218,9 +318,16 @@ var tests = {
             "tests" : {
                 testLayerName,
                 testMoveLayer,
+
+                testSortLayersVertically,
+                testSortLayersHorizontally,
+
+                testReorderSimple2Layers,
+                testReorderSimple3Layers,
                 testReorderAllLayers,
                 testReorderSomeLayers,
-                //testOrganizeLayers
+
+                testOrganizeLayers
             }
         }
     }
