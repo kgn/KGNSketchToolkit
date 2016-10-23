@@ -53,7 +53,7 @@ function organizeLayers(prefix, layers) {
 
 // Commands
 
-function onRun(context) {
+function main(context) {
     var sketch = context.api();
     var selection = sketch.selectedDocument.selectedLayers;
     if (selection.isEmpty) {
@@ -163,8 +163,7 @@ function testReorderSomeLayers(tester) {
 
 function testOrganizeLayers(tester) {
     var sketch = context.api();
-    var page = sketch.selectedDocument.selectedPage;
-    var parent = page.newGroup();
+    var parent = sketch.selectedDocument.selectedPage.newGroup();
     var prefix = "Table Row";
 
     var layers = [];

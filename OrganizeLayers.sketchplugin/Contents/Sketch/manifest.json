@@ -13,10 +13,11 @@
       "identifier": "organize-layers",
       "shortcut": "ctrl shift o",
       "script": "OrganizeLayers.js",
-      "handler": "onRun"
+      "handler": "main"
     },
   ],
   "menu": {
+    "isRoot": true,
     "items": [
       "organize-layers"
     ]
