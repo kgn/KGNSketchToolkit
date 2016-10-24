@@ -9,3 +9,4 @@ These plugins are very much a work in progress, the plan is for them to only use
 ## Resources:
 - http://developer.sketchapp.com/introduction/plugin-bundles/
 - https://github.com/abynim/Sketch-Headers
+- https://github.com/romannurik/Sketch-NibUITemplatePlugin

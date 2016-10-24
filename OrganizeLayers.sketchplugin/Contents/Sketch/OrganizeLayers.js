@@ -1,3 +1,5 @@
+// TODO: improve plugin for selections that extend beyond groups
+
 function layerName(prefix, count) {
     return prefix+" "+count;
 }
@@ -48,9 +50,11 @@ function sortLayers(layers) {
     return sortedLayers.reverse();
 }
 
-function organizeLayers(prefix, layers) {
+function organizeLayers(layers, prefix) {
     reorderLayers(sortLayers(layers), function(layer, index) {
-        layer.name = layerName(prefix, layers.length-index);
+        if (prefix.length > 0) {
+            layer.name = layerName(prefix, layers.length-index);
+        }
     });
 }
 
@@ -62,8 +66,12 @@ function main(context) {
     if (selection.isEmpty) {
         sketch.message("Nothing selected; nothing to organize");
     } else {
+        var layers = [];
         var prefix = sketch.getStringFromUser("Prefix name", "");
-        organizeLayers(prefix, selection.nativeLayers);
+        selection.iterate(function(layer) {
+            layers.push(layer);
+        });
+        organizeLayers(layers, prefix.trim());
         sketch.message("Layers organized!");
     }
 }
@@ -280,7 +288,7 @@ function testOrganizeLayers(tester) {
     layers.push(layer3);
     var topLayer = parent.newGroup({"name": "Top Group"});
     
-    tester.assertEqual(topLayer.index, 6); 
+    tester.assertEqual(topLayer.index, 6);
     tester.assertEqual(layer3.index, 5);
     tester.assertEqual(layer2.index, 4);
     tester.assertEqual(layer4.index, 3);
@@ -288,7 +296,7 @@ function testOrganizeLayers(tester) {
     tester.assertEqual(layer5.index, 1);   
     tester.assertEqual(bottomLayer.index, 0);
 
-    organizeLayers(prefix, layers);
+    organizeLayers(layers, prefix);
 
     tester.assertEqual(topLayer.index, 6);
 
@@ -336,4 +344,4 @@ var tests = {
 function runTests() {
     log(context.api().tester.runUnitTests(tests));
 }
-runTests()
+// runTests()
