@@ -66,12 +66,8 @@ function main(context) {
     if (selection.isEmpty) {
         sketch.message("Nothing selected; nothing to organize");
     } else {
-        var layers = [];
-        var prefix = sketch.getStringFromUser("Prefix name", "");
-        selection.iterate(function(layer) {
-            layers.push(layer);
-        });
-        organizeLayers(layers, prefix.trim());
+        var prefix = sketch.getStringFromUser("Prefix name");
+        organizeLayers(selection.layers, prefix.trim());
         sketch.message("Layers organized!");
     }
 }
