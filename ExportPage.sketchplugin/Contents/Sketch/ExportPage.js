@@ -18,15 +18,11 @@ function exportPage(page, labelOffset, exportPadding) {
     if (group === undefined) {
         group = page.newGroup({"name": groupName});
     } else {
-        var layers = [];
-        group.iterate(function(layer) {
+        group.layers.forEach(function(layer) {
             if (layer.name == sliceName) {
                 slice = layer;
                 return;
             }
-            layers.push(layer);
-        });
-        layers.forEach(function(layer) {
             layer.remove();
         });
         group.frame = new Rectangle();
