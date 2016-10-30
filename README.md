@@ -12,6 +12,7 @@ Renames and orders layers in the layer list based on their screen layout.
 
 ## Export Page
 Export all the artboards on the page to an image with artboard titles.
+![Export Page](ExportPage.gif)
 
 ### TODO
 - [ ] [Automate Export](https://github.com/BohemianCoding/SketchAPI/pull/9)
