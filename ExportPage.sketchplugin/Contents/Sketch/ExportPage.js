@@ -25,7 +25,7 @@ function exportPage(page, labelOffset, exportPadding) {
             }
             layer.remove();
         });
-        group.frame = new Rectangle();
+        group.frame = new sketch.Rectangle();
     }
 
     var sliceFrame;

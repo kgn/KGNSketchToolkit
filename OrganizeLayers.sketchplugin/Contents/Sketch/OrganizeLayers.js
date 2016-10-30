@@ -115,15 +115,15 @@ function testSortLayersVertically(tester) {
 
     var size = 100;
     var layers = [];
-    var layer5 = parent.newGroup({"name": "Group 5", "frame": new Rectangle(size*4, 0, size, size)});
+    var layer5 = parent.newGroup({"name": "Group 5", "frame": new sketch.Rectangle(size*4, 0, size, size)});
     layers.push(layer5);    
-    var layer1 = parent.newGroup({"name": "Group 1", "frame": new Rectangle(size*0, 0, size, size)});
+    var layer1 = parent.newGroup({"name": "Group 1", "frame": new sketch.Rectangle(size*0, 0, size, size)});
     layers.push(layer1);
-    var layer4 = parent.newGroup({"name": "Group 4", "frame": new Rectangle(size*3, 0, size, size)});
+    var layer4 = parent.newGroup({"name": "Group 4", "frame": new sketch.Rectangle(size*3, 0, size, size)});
     layers.push(layer4);
-    var layer2 = parent.newGroup({"name": "Group 2", "frame": new Rectangle(size*1, 0, size, size)});
+    var layer2 = parent.newGroup({"name": "Group 2", "frame": new sketch.Rectangle(size*1, 0, size, size)});
     layers.push(layer2);
-    var layer3 = parent.newGroup({"name": "Group 3", "frame": new Rectangle(size*2, 0, size, size)});
+    var layer3 = parent.newGroup({"name": "Group 3", "frame": new sketch.Rectangle(size*2, 0, size, size)});
     layers.push(layer3);
 
     var sortedLayers = sortLayers(layers);
@@ -144,15 +144,15 @@ function testSortLayersHorizontally(tester) {
 
     var size = 100;
     var layers = [];
-    var layer5 = parent.newGroup({"name": "Group 5", "frame": new Rectangle(0, size*4, size, size)});
+    var layer5 = parent.newGroup({"name": "Group 5", "frame": new sketch.Rectangle(0, size*4, size, size)});
     layers.push(layer5);    
-    var layer1 = parent.newGroup({"name": "Group 1", "frame": new Rectangle(0, size*0, size, size)});
+    var layer1 = parent.newGroup({"name": "Group 1", "frame": new sketch.Rectangle(0, size*0, size, size)});
     layers.push(layer1);
-    var layer4 = parent.newGroup({"name": "Group 4", "frame": new Rectangle(0, size*3, size, size)});
+    var layer4 = parent.newGroup({"name": "Group 4", "frame": new sketch.Rectangle(0, size*3, size, size)});
     layers.push(layer4);
-    var layer2 = parent.newGroup({"name": "Group 2", "frame": new Rectangle(0, size*1, size, size)});
+    var layer2 = parent.newGroup({"name": "Group 2", "frame": new sketch.Rectangle(0, size*1, size, size)});
     layers.push(layer2);
-    var layer3 = parent.newGroup({"name": "Group 3", "frame": new Rectangle(0, size*2, size, size)});
+    var layer3 = parent.newGroup({"name": "Group 3", "frame": new sketch.Rectangle(0, size*2, size, size)});
     layers.push(layer3);
 
     var sortedLayers = sortLayers(layers);
@@ -272,15 +272,15 @@ function testOrganizeLayers(tester) {
     var size = 100;
     var layers = [];
     var bottomLayer = parent.newGroup({"name": "Bottom Group"});
-    var layer5 = parent.newGroup({"name": "Group 5", "frame": new Rectangle(0, size*4, size, size)});
+    var layer5 = parent.newGroup({"name": "Group 5", "frame": new sketch.Rectangle(0, size*4, size, size)});
     layers.push(layer5);    
-    var layer1 = parent.newGroup({"name": "Group 1", "frame": new Rectangle(0, size*0, size, size)});
+    var layer1 = parent.newGroup({"name": "Group 1", "frame": new sketch.Rectangle(0, size*0, size, size)});
     layers.push(layer1);
-    var layer4 = parent.newGroup({"name": "Group 4", "frame": new Rectangle(0, size*3, size, size)});
+    var layer4 = parent.newGroup({"name": "Group 4", "frame": new sketch.Rectangle(0, size*3, size, size)});
     layers.push(layer4);
-    var layer2 = parent.newGroup({"name": "Group 2", "frame": new Rectangle(0, size*1, size, size)});
+    var layer2 = parent.newGroup({"name": "Group 2", "frame": new sketch.Rectangle(0, size*1, size, size)});
     layers.push(layer2);
-    var layer3 = parent.newGroup({"name": "Group 3", "frame": new Rectangle(0, size*2, size, size)});
+    var layer3 = parent.newGroup({"name": "Group 3", "frame": new sketch.Rectangle(0, size*2, size, size)});
     layers.push(layer3);
     var topLayer = parent.newGroup({"name": "Top Group"});
     
