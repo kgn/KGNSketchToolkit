@@ -2,14 +2,24 @@
 function expandFrame(frame, subFrame) {
     var newFrame = frame;
     if (newFrame === undefined) { return subFrame }
-    if (subFrame.x < newFrame.x) { newFrame.x = subFrame.x }
-    if (subFrame.y < newFrame.y) { newFrame.y = subFrame.y }
-    if (subFrame.maxX > newFrame.maxX) { newFrame.width = subFrame.maxX-newFrame.x }
-    if (subFrame.maxY > newFrame.maxY) { newFrame.height = subFrame.maxY-newFrame.y }
+    if (subFrame.x < newFrame.x) { 
+        newFrame.width += newFrame.x - subFrame.x;
+        newFrame.x = subFrame.x;
+    }
+    if (subFrame.y < newFrame.y) { 
+        newFrame.height += newFrame.y - subFrame.y;
+        newFrame.y = subFrame.y;
+    }
+    if (subFrame.maxX > newFrame.maxX) { 
+        newFrame.width = subFrame.maxX-newFrame.x 
+    }
+    if (subFrame.maxY > newFrame.maxY) { 
+        newFrame.height = subFrame.maxY-newFrame.y 
+    }
     return newFrame;
 }
 
-function exportPage(page, labelOffset, exportPadding) {
+function exportPage(sketch, page, labelOffset, exportPadding) {
     var group, groupName = "Export Page Group";
     var slice, sliceName = "Export Group Slice";
 
@@ -70,8 +80,9 @@ function main(context) {
     var document = sketch.selectedDocument;
     var page = document.selectedPage;
     var labelOffset = 10, exportPadding = 10;
-    exportPage(page, labelOffset, exportPadding);
+    exportPage(sketch, page, labelOffset, exportPadding);
 }
+// main(context);
 
 // Tests
 
@@ -112,13 +123,38 @@ function testExpandFrameComplex(tester) {
     tester.assertEqual(expandedRect.height, 700);    
 }
 
+function testExpandFrameActural(tester) {
+    var sketch = context.api();
+    var frames = [
+        new sketch.Rectangle(-509, -26, 144, 23),
+        new sketch.Rectangle(291, 7, 320, 568),
+        new sketch.Rectangle(-1309, 7, 320, 568),
+        new sketch.Rectangle(-509, 7, 320, 568),
+        new sketch.Rectangle(-109, -26, 144, 23),
+        new sketch.Rectangle(-109, 7, 320, 568),
+        new sketch.Rectangle(291, -26, 144, 23),
+        new sketch.Rectangle(-1309, -26, 144, 23),
+        new sketch.Rectangle(-909, -26, 144, 23),
+        new sketch.Rectangle(-909, 7, 320, 568)
+    ];
+    var expandedRect;
+    frames.forEach(function(frame) {
+        expandedRect = expandFrame(expandedRect, frame);
+    });
+    tester.assertEqual(expandedRect.x, -1309);
+    tester.assertEqual(expandedRect.y, -26);
+    tester.assertEqual(expandedRect.width, 1920);
+    tester.assertEqual(expandedRect.height, 601);
+}
+
 var tests = {
     "suites" : {
         "Export Page": {
             "tests" : {
                 testExpandFrame1,
                 testExpandFrame2,
-                testExpandFrameComplex
+                testExpandFrameComplex,
+                testExpandFrameActural
             }
         }
     }
@@ -127,4 +163,4 @@ var tests = {
 function runTests() {
     log(context.api().tester.runUnitTests(tests));
 }
-// runTests()
+// runTests();
