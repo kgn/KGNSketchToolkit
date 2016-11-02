@@ -33,6 +33,14 @@ Export assets for all mobile sizes with platform naming conventions.
 - [ ] Build it ;)
 - [ ] [Automate Export](https://github.com/BohemianCoding/SketchAPI/pull/9)
 
+## Golden Ratio Text
+
+Port of (this)[https://github.com/lorenzwoehr/Golden-Ratio-Line-Height-Sketch-Plugin] plugin.
+
+### TODO
+- [ ] Write unit tests
+- [ ] Port plugin to SketchAPI
+
 ## Resources:
 - http://developer.sketchapp.com/introduction/plugin-bundles/
 - https://github.com/abynim/Sketch-Headers
