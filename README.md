@@ -34,10 +34,11 @@ Export assets for all mobile sizes with platform naming conventions.
 - [ ] [Automate Export](https://github.com/BohemianCoding/SketchAPI/pull/9)
 
 ## Golden Ratio Text
-
-Port of (this)[https://github.com/lorenzwoehr/Golden-Ratio-Line-Height-Sketch-Plugin] plugin.
+Port of [this](https://github.com/lorenzwoehr/Golden-Ratio-Line-Height-Sketch-Plugin) plugin.
+![Golden Ratio Text](GoldenRatioText.gif)
 
 ### TODO
+- [ ] [Read](https://pearsonified.com/2011/12/golden-ratio-typography.php)
 - [ ] Write unit tests
 - [ ] Port plugin to SketchAPI
 
