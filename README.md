@@ -43,6 +43,7 @@ Port of [this](https://github.com/lorenzwoehr/Golden-Ratio-Line-Height-Sketch-Pl
 - [ ] Port plugin to SketchAPI
 
 ## Resources:
+- http://developer.sketchapp.com/reference/
 - http://developer.sketchapp.com/introduction/plugin-bundles/
 - https://github.com/abynim/Sketch-Headers
 - https://github.com/romannurik/Sketch-NibUITemplatePlugin

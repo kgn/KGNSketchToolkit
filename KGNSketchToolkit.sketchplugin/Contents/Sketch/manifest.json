@@ -1,0 +1,44 @@
+{
+  "name": "KGNSketchToolkit",
+  "author": "David Keegan",
+  "description": "A toolkit of useful Sketch tools",
+  "homepage": "https://github.com/kgn/SketchPlugins",
+  "identifier": "com.davidkeegan.sketch.kgntoolkit",  
+  "compatibleVersion": 3,
+  "bundleVersion": 1,
+  "version": 0.1,
+
+  "commands": [
+    {
+      "name": "Organize Layers",
+      "identifier": "organize-layers",
+      "shortcut": "ctrl shift o",
+      "script": "OrganizeLayers.js",
+      "handler": "main"
+    },
+    {
+      "name": "Export Page",
+      "identifier": "export-page",
+      "shortcut": "ctrl shift e",
+      "script": "ExportPage.js",
+      "handler": "main"
+    },    
+    {
+      "name": "Golden Ratio Text",
+      "identifier": "golden-ratio-text",
+      "shortcut": "ctrl shift r",
+      "script": "GoldenRatioText.js",
+      "handler": "main"
+    },
+  ],
+
+  "menu": {
+    "title": "KGN Sketch Toolkit",
+    "items": [
+      "organize-layers",
+      "export-page",
+      "golden-ratio-text"
+    ]
+  }
+
+}
