@@ -6,9 +6,16 @@
   "identifier": "com.davidkeegan.sketch.kgntoolkit",  
   "compatibleVersion": 3,
   "bundleVersion": 1,
-  "version": 0.1,
+  "version": 0.2,
 
   "commands": [
+    {
+      "name": "Select Artboards",
+      "identifier": "select-artboards",
+      "shortcut": "ctrl shift a",
+      "script": "SelectArtboards.js",
+      "handler": "main"
+    },    
     {
       "name": "Organize Layers",
       "identifier": "organize-layers",
@@ -35,6 +42,7 @@
   "menu": {
     "title": "KGN Sketch Toolkit",
     "items": [
+      "select-artboards",
       "organize-layers",
       "export-page",
       "golden-ratio-text"
