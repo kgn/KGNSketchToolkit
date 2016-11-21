@@ -5,11 +5,10 @@ function main(context) {
 
 	var artboards = [];
 	selection.iterate(function(layer) {
-		// TODO: add parentArtboard to SketchAPI
-	    artboards.push(layer._object.parentArtboard());
+	    artboards.push(layer.parentArtboard);
 	});
 	selection.clear();
 	artboards.forEach(function(artboard) {
-	    artboard.select_byExpandingSelection(true, true);
+	    artboard.addToSelection();
 	});
 }
